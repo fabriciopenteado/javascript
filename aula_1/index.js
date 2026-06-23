@@ -28,8 +28,9 @@ function divisao() {
 }
 
 function somarImputs() {
-  console.log("somarImput");
   const num1 = Number(document.querySelector("#num1_soma").value);
   const num2 = Number(document.querySelector("#num2_soma").value);
-  console.log(num1, num2);
+  const resultado = document.querySelector("#resultado_soma");
+  const soma = num1 + num2;
+  resultado.textContent = `O resultado da soma é ${soma}`;
 }
