@@ -14,22 +14,16 @@
   <body>
     <div class="container">
       <div class="row">
-        <div class="col-4"></div>
         <div class="col-4">
-          <label for="logradouro" class="form-label">Logradouro</label>
           <label for="cep" class="form.label">CEP</label>
-          <input
-            type="text"
-            name="Logradouro"
-            id="logradouro"
-            class="form-control"
-          />
           <div class="input-group">
             <input type="text" name="cep" id="cep" class="form-control" />
-            <button type="button" class="btn btn-primary" onclick="buscarCep()">
-              Buscar
-            </button>
+            <button type="button" class="btn btn-primary" onclick="buscarCep()">Buscar</button>
           </div>
+        </div>
+        <div class="col-4">
+            <label for="logradouro" class="form-label">Logradouro</label>
+            <input type="text" name="Logradouro" id="logradouro" class="form-control"/>
         </div>
       </div>
     </div>
