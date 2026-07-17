@@ -1,11 +1,16 @@
-const GLOBAL_URL = "https://6a50327ff45d5352b6121ace.mockapi.io/produtos";
+const GLOBAL_URL = `https://6a50327cf45d5352b6121ab2.mockapi.io/produtos`;
 
 async function carregarProdutos() {
-  const resposta = await fetch(GLOBAL_URL);
-  const produtos = await resposta.json();
-  console.log(produtos);
+  try {
+    const resposta = await fetch(GLOBAL_URL);
+    const produtos = await resposta.json();
+    console.log(produtos);
 
-  listarProdutos(produtos);
+    listarProdutos(produtos);
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possivel carregar os dados.");
+  }
 }
 
 function listarProdutos(produtos) {
@@ -16,9 +21,13 @@ function listarProdutos(produtos) {
     <td>${produto.id}</td>
     <td>${produto.nome}</td>
     <td>${produto.quantidade}</td>
-    <td>${produto.valorUnitario}</td>
-    <td>${calcularTotal(produto.quantidade, produto.valorUnitario)}</td>
-    <td></td>
+    <td>${produto.preco}</td>
+    <td>${calcularTotal(produto.quantidade, produto.preco)}</td>
+    <td>
+    <button class="btn btn-danger" onclick="removerProduto(${produto.id})">
+    Remover
+    </button>    
+    </td>
     </tr>
     `;
   }
@@ -27,8 +36,51 @@ function listarProdutos(produtos) {
   tbody.innerHTML = html;
 }
 
-function calcularTotal(quantidade, valorUnitario) {
-  return "Valor Calculado";
+function calcularTotal(quantidade, preco) {
+  return quantidade * preco;
+}
+
+async function removerProduto(id) {
+  //Regra de parada
+  if (!confirm("Realmente deseja apgar esse produto?")) {
+    return;
+  }
+
+  const url = `${GLOBAL_URL}/${id}`;
+
+  try {
+    await fetch(url, {
+      method: "DELETE",
+    });
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possivel apagar este produto.");
+  } finally {
+    carregarProdutos();
+  }
+}
+
+async function cadastrarProduto() {
+  const produto = {
+    nome: document.querySelector("#nome").value,
+    preco: Number(document.querySelector("#preco").value) || 0,
+    quantidade: Number(document.querySelector("#quantidade").value) || 0,
+  };
+
+  try {
+    await fetch(GLOBAL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(produto),
+    });
+
+    carregarProdutos();
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possivel cadastrar esse produto");
+  }
 }
 
 carregarProdutos();
